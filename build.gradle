@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.telegram', name: 'telegrambots-spring-boot-starter', version: '6.9.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
