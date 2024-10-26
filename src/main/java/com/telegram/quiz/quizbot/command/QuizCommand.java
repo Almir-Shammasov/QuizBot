@@ -10,11 +10,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class QuizCommand implements Command {
     private final TelegramService telegramService;
     private final DbQuizService dbQuizService;
+    private List<Integer> questions;
 
     @Override
     public String getCommandName() {
