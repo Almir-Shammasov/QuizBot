@@ -13,9 +13,6 @@ import java.util.List;
 @Slf4j
 public class DbQuizService {
     private final QuizRepository quizRepository;
-    public void addQuiz(QuizObject quiz) {
-        quizRepository.save(quiz);
-    }
 
     public List<QuizObject> getAllQuestions() {
         return quizRepository.findAll();
@@ -24,4 +21,6 @@ public class DbQuizService {
     public QuizObject getById(int id) {
         return quizRepository.getById(id);
     }
+
+
 }

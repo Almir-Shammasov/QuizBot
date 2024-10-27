@@ -8,8 +8,13 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Service
 @Slf4j
@@ -50,6 +55,24 @@ public class TelegramService extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
+    }
+
+    public void sendPictureFromDB(Long chatId, byte[] imageBytes, String caption) {
+        if (imageBytes == null || imageBytes.length == 0) {
+            System.out.println("Изображение не найдено в базе данных");
+            return;
+        }
+            InputStream imageStream = new ByteArrayInputStream(imageBytes);
+            SendPhoto photo = new SendPhoto();
+            photo.setChatId(chatId.toString());
+            photo.setPhoto(new InputFile(imageStream, "file_name"));
+            photo.setCaption(caption);
+
+            try {
+                execute(photo);
+            } catch (TelegramApiException e) {
+                log.error("Failed");
+            }
     }
 
     @Override
