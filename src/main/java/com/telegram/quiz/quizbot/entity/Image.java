@@ -21,7 +21,6 @@ public class Image {
     private String name;
     @Column(name = "type")
     private String type;
-    @Lob
-    @Column(name = "data")
+    @Column(columnDefinition = "BYTEA")
     private byte[] data;
 }

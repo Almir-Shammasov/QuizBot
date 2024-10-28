@@ -1,6 +1,7 @@
 package com.telegram.quiz.quizbot.service;
 
 import com.telegram.quiz.quizbot.command.CommandRegistry;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,12 +10,11 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+
 
 @Service
 @Slf4j
@@ -27,6 +27,7 @@ public class TelegramService extends TelegramLongPollingBot {
     @Value("${bot.parsemode}")
     private String parseMode;
     private final CommandRegistry commandRegistry;
+    private final ImageService imageService;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -34,6 +35,8 @@ public class TelegramService extends TelegramLongPollingBot {
             String textMessage = update.getMessage().getText();
             log.info("Вы отправили сообщение: " + update.getMessage().getText());
             commandRegistry.executeCommand(textMessage, update.getMessage());
+
+//           saveImage("C:\\Users\\dacot\\Desktop\\Bot\\TelegramBot\\QuizBot\\src\\main\\images");
         }
     }
 
@@ -57,22 +60,16 @@ public class TelegramService extends TelegramLongPollingBot {
         }
     }
 
-    public void sendPictureFromDB(Long chatId, byte[] imageBytes, String caption) {
-        if (imageBytes == null || imageBytes.length == 0) {
-            System.out.println("Изображение не найдено в базе данных");
-            return;
+    public void saveImage(String path) {
+        try {
+            imageService.saveImage(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-            InputStream imageStream = new ByteArrayInputStream(imageBytes);
-            SendPhoto photo = new SendPhoto();
-            photo.setChatId(chatId.toString());
-            photo.setPhoto(new InputFile(imageStream, "file_name"));
-            photo.setCaption(caption);
+    }
 
-            try {
-                execute(photo);
-            } catch (TelegramApiException e) {
-                log.error("Failed");
-            }
+    public void sendImage(Message message) {
+
     }
 
     @Override
