@@ -1,48 +1,31 @@
 package com.telegram.quiz.quizbot.service;
 
-import com.telegram.quiz.quizbot.db.ImageRepository;
 import com.telegram.quiz.quizbot.entity.Image;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.io.FileInputStream;
-import java.nio.file.Files;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This interface is for uploading and retrieving images from the database
+ */
+public interface ImageService {
+    /**
+     * Returns the image representation as a byte array
+     * @return returns an array of byte type
+     * @param id
+     */
+    public byte[] getImage(int id);
 
-@Service
-@RequiredArgsConstructor
-public class ImageService {
-    private final ImageRepository imageRepository;
+    /**
+     * Returns a list of all images contained in the database
+     * @return returns a List of Image type
+     */
+    List<Image> getAllImages();
 
-    public byte[] getImage(int id) {
-        return imageRepository.getById(id).getData();
-    }
-
-    public List<Image> getAllImages() {
-        return imageRepository.findAll();
-    }
-
-    public void saveImage(String directoryPath) throws IOException {
-        File folder = new File(directoryPath);
-        File[] files = folder.listFiles((dir, name) -> name.endsWith(".jpg"));
-        if(files != null) {
-            for(File file : files) {
-                Image image = new Image();
-                image.setName(file.getName());
-                image.setType(".jpg");
-                image.setData(getFileData(file));
-
-                imageRepository.save(image);
-            }
-        }
-    }
-
-    public byte[] getFileData(File file) throws IOException {
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            return fileInputStream.readAllBytes();
-        }
-    }
+    /**
+     * Saves the picture to the database
+     * @param directoryPath
+     * @throws IOException
+     */
+    void saveImage(String directoryPath) throws IOException;
 }

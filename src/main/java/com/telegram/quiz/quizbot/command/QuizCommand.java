@@ -1,8 +1,8 @@
 package com.telegram.quiz.quizbot.command;
 
 import com.telegram.quiz.quizbot.entity.QuizObject;
-import com.telegram.quiz.quizbot.service.DbQuizService;
-import com.telegram.quiz.quizbot.service.TelegramService;
+import com.telegram.quiz.quizbot.service.impl.QuizServiceImpl;
+import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import com.telegram.quiz.quizbot.utils.TelegramUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizCommand implements Command {
     private final TelegramService telegramService;
-    private final DbQuizService dbQuizService;
+    private final QuizServiceImpl dbQuizService;
     private final List<Integer> questionsCount = new ArrayList<>();
 
 

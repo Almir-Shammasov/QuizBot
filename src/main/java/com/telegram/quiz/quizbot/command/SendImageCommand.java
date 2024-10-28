@@ -1,7 +1,7 @@
 package com.telegram.quiz.quizbot.command;
 
-import com.telegram.quiz.quizbot.service.ImageService;
-import com.telegram.quiz.quizbot.service.TelegramService;
+import com.telegram.quiz.quizbot.service.impl.ImageServiceImpl;
+import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SendImageCommand implements Command {
     private final TelegramService telegramService;
-    private final ImageService imageService;
+    private final ImageServiceImpl imageService;
     private final List<Integer> imagesCount = new ArrayList<>();
 
     public void fillImagesCount() {

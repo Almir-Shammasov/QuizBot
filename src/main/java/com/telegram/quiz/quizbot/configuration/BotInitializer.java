@@ -1,6 +1,6 @@
 package com.telegram.quiz.quizbot.configuration;
 
-import com.telegram.quiz.quizbot.service.TelegramService;
+import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

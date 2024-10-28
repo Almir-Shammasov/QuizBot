@@ -1,8 +1,8 @@
 package com.telegram.quiz.quizbot.command;
 
 import com.telegram.quiz.quizbot.entity.TelegramUser;
-import com.telegram.quiz.quizbot.service.DbUserService;
-import com.telegram.quiz.quizbot.service.TelegramService;
+import com.telegram.quiz.quizbot.service.impl.UserServiceImpl;
+import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
     private final TelegramService telegramService;
-    private final DbUserService dbUserService;
+    private final UserServiceImpl dbUserService;
 
     @Override
     public String getCommandName() {

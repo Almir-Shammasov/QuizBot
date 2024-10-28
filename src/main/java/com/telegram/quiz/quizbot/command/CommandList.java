@@ -1,6 +1,6 @@
 package com.telegram.quiz.quizbot.command;
 
-import com.telegram.quiz.quizbot.service.TelegramService;
+import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;

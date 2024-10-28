@@ -1,7 +1,8 @@
-package com.telegram.quiz.quizbot.service;
+package com.telegram.quiz.quizbot.service.impl;
 
 import com.telegram.quiz.quizbot.command.CommandRegistry;
 
+import com.telegram.quiz.quizbot.service.impl.ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class TelegramService extends TelegramLongPollingBot {
     @Value("${bot.parsemode}")
     private String parseMode;
     private final CommandRegistry commandRegistry;
-    private final ImageService imageService;
+    private final ImageServiceImpl imageService;
 
     @Override
     public void onUpdateReceived(Update update) {
