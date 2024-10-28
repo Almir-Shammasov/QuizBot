@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.List;
 
 
 @Service
@@ -19,6 +19,10 @@ public class ImageService {
 
     public byte[] getImage(int id) {
         return imageRepository.getById(id).getData();
+    }
+
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
     }
 
     public void saveImage(String directoryPath) throws IOException {

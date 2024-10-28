@@ -9,12 +9,24 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class SendImageCommand implements Command {
     private final TelegramService telegramService;
     private final ImageService imageService;
+    private final List<Integer> imagesCount = new ArrayList<>();
+
+    public void fillImagesCount() {
+        int imagesSize = imageService.getAllImages().size();
+        for (int i = 1; i <= imagesSize; i++) {
+            imagesCount.add(i);
+        }
+        Collections.shuffle(imagesCount);
+    }
 
     @Override
     public String getCommandName() {
@@ -24,8 +36,13 @@ public class SendImageCommand implements Command {
     @Override
     @Transactional
     public void execute(Message message) {
-        byte[] image = imageService.getImage(1);
-        InputFile inputFile = new InputFile(new ByteArrayInputStream(image),  1 +".jpg");
-        telegramService.sendPhoto(message.getChatId(), inputFile);
+        Long chatId = message.getChatId();
+        if(imagesCount.isEmpty()) {
+            fillImagesCount();
+        }
+        int randomImage = imagesCount.removeFirst();
+        byte[] image = imageService.getImage(randomImage);
+        InputFile inputFile = new InputFile(new ByteArrayInputStream(image),  randomImage +".jpg");
+        telegramService.sendPhoto(chatId, inputFile);
     }
 }

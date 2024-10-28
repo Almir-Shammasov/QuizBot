@@ -19,15 +19,15 @@ import java.util.List;
 public class QuizCommand implements Command {
     private final TelegramService telegramService;
     private final DbQuizService dbQuizService;
-    private final List<Integer> questions = new ArrayList<>();
+    private final List<Integer> questionsCount = new ArrayList<>();
 
 
-    public void fillQuestions() {
+    public void fillQuestionsCount() {
         int quizSize = dbQuizService.getAllQuestions().size();
         for (int i = 1; i <= quizSize; i++) {
-            questions.add(i);
+            questionsCount.add(i);
         }
-        Collections.shuffle(questions);
+        Collections.shuffle(questionsCount);
     }
 
     @Override
@@ -39,10 +39,10 @@ public class QuizCommand implements Command {
     @Transactional
     public void execute(Message message) {
         Long chatId = message.getChatId();
-        if (questions.isEmpty()) {
-            fillQuestions();
+        if (questionsCount.isEmpty()) {
+            fillQuestionsCount();
         }
-        int randomQuestion = questions.removeFirst();
+        int randomQuestion = questionsCount.removeFirst();
         QuizObject randomQuiz = dbQuizService.getById(randomQuestion);
         SendPoll quiz = TelegramUtils.createQuiz(chatId, randomQuiz.getTitle(), randomQuiz.getAnswers(), randomQuiz.getCorrectindex());
         telegramService.sendPoll(quiz);
