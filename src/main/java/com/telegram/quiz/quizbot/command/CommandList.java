@@ -18,9 +18,10 @@ public class CommandList implements Command {
     @Override
     public void execute(Message message) {
         String listCommands = """
-                List of bot commands:
-                Type /help to show background information
-                Type /quiz to play quiz""";
+                Список всех команд бота:
+                Тип: /help справочная информация
+                Тип: /quiz сыграть в квиз(получить случайный вопрос из квиза)
+                Тип: /getmemes получить рандомный мемчик """;
         telegramService.sendTextMessage(listCommands, message.getChatId());
     }
 }
