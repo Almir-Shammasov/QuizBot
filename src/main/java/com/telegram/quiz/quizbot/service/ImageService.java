@@ -17,6 +17,10 @@ import java.io.IOException;
 public class ImageService {
     private final ImageRepository imageRepository;
 
+    public byte[] getImage(int id) {
+        return imageRepository.getById(id).getData();
+    }
+
     public void saveImage(String directoryPath) throws IOException {
         File folder = new File(directoryPath);
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".jpg"));

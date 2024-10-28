@@ -68,8 +68,13 @@ public class TelegramService extends TelegramLongPollingBot {
         }
     }
 
-    public void sendImage(Message message) {
-
+    public void sendPhoto(Long chatId, InputFile inputFile) {
+        SendPhoto photo = SendPhoto.builder().chatId(chatId).photo(inputFile).build();
+        try {
+            execute(photo);
+        } catch (TelegramApiException e) {
+            log.error("Error occurred: " + e.getMessage());
+        }
     }
 
     @Override
