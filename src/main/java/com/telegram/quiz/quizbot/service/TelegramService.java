@@ -33,10 +33,24 @@ public class TelegramService extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()) {
             String textMessage = update.getMessage().getText();
-            log.info("Вы отправили сообщение: " + update.getMessage().getText());
-            commandRegistry.executeCommand(textMessage, update.getMessage());
-
-//           saveImage("C:\\Users\\dacot\\Desktop\\Bot\\TelegramBot\\QuizBot\\src\\main\\images");
+            if(textMessage.startsWith("/")) {
+                commandRegistry.executeCommand(textMessage, update.getMessage());
+            } else {
+                sendTextMessage("Я не могу отвечать вам на сообщения, но я могу выполнять команды на которые меня запрограммировали, " +
+                        "список команд вы можете посмотреть нажав сюда /commandlist", update.getMessage().getChatId());
+                log.info("Получено сообщение: " + update.getMessage().getText() + "\n" +
+                        " От пользователя: " + update.getMessage().getChat().getUserName() + " с Id: " + update.getMessage().getChat().getId());
+            }
+        } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
+            sendTextMessage("О, вы прислали картинку, спасибо. Но я не могу распознавать изображения\n" +
+                    "Надеюсь там что то смешное!)", update.getMessage().getChatId());
+        } else if (update.hasMessage() && update.getMessage().hasVideo()) {
+            sendTextMessage("Кажется вы прислали видео. Я не могу распознавать видеофайлы\n" +
+                    "Но надеюсь там нет ничего запрещенного! ;)", update.getMessage().getChatId());
+        } else if (update.hasMessage() && update.getMessage().hasVoice()) {
+            sendTextMessage("О нееет, только не голосовухи!", update.getMessage().getChatId());
+        } else if (update.hasMessage() && update.getMessage().hasSticker()) {
+            sendTextMessage("Не могу распознавать стикеры", update.getMessage().getChatId());
         }
     }
 
@@ -60,7 +74,7 @@ public class TelegramService extends TelegramLongPollingBot {
         }
     }
 
-    public void saveImage(String path) {
+    public void saveImageFromDirectiory(String path) {
         try {
             imageService.saveImage(path);
         } catch (IOException e) {

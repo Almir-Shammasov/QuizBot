@@ -26,6 +26,7 @@ public class HelpCommand implements Command {
                 "Справочная информация: " +
                         "Этот бот создан в рамках изучения библиотеки TelegramLongPollingBot. " +
                         "Здесь будет предоставлен квиз. Что бы сыграть в квиз нужно отправить команду /quiz. " +
+                        "Так же можно получить рандомный мемасик отправив команду /getmemes " +
                         "Что бы посмотреть все команды наберите /commandlist", message.getChatId());
 
         dbUserService.writeUser(new TelegramUser(
