@@ -25,6 +25,10 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findAll();
     }
 
+    public int getCount() {
+        return (int)imageRepository.count();
+    }
+
     public void saveImage(String directoryPath) throws IOException {
         File folder = new File(directoryPath);
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".jpg"));

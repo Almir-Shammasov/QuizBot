@@ -2,7 +2,6 @@ package com.telegram.quiz.quizbot.service.impl;
 
 import com.telegram.quiz.quizbot.command.CommandRegistry;
 
-import com.telegram.quiz.quizbot.service.impl.ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,7 +78,7 @@ public class TelegramService extends TelegramLongPollingBot {
         try {
             imageService.saveImage(path);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Error occurred: " + e.getMessage());
         }
     }
 

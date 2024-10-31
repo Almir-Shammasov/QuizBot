@@ -9,24 +9,14 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class SendImageCommand implements Command {
     private final TelegramService telegramService;
     private final ImageServiceImpl imageService;
-    private final List<Integer> imagesCount = new ArrayList<>();
-
-    public void fillImagesCount() {
-        int imagesSize = imageService.getAllImages().size();
-        for (int i = 1; i <= imagesSize; i++) {
-            imagesCount.add(i);
-        }
-        Collections.shuffle(imagesCount);
-    }
+    private final Map<Long, List<Integer>> mapOfImages = new HashMap<>();
 
     @Override
     public String getCommandName() {
@@ -37,10 +27,27 @@ public class SendImageCommand implements Command {
     @Transactional
     public void execute(Message message) {
         Long chatId = message.getChatId();
-        if(imagesCount.isEmpty()) {
-            fillImagesCount();
+
+        if(!mapOfImages.containsKey(chatId)) {
+            int images = imageService.getCount();
+            List<Integer> imagesCount = new ArrayList<>();
+            for (int i = 1; i <= images; i++) {
+                imagesCount.add(i);
+            }
+            Collections.shuffle(imagesCount);
+            mapOfImages.put(chatId, imagesCount);
+        } else {
+            if(mapOfImages.containsKey(chatId) && mapOfImages.get(chatId).isEmpty()) {
+                int images = imageService.getCount();
+                for (int i = 1; i <= images; i++) {
+                    mapOfImages.get(chatId).add(i);
+                }
+                Collections.shuffle(mapOfImages.get(chatId));
+            }
         }
-        int randomImage = imagesCount.removeFirst();
+
+
+        int randomImage = mapOfImages.get(chatId).removeFirst();
         byte[] image = imageService.getImage(randomImage);
         InputFile inputFile = new InputFile(new ByteArrayInputStream(image),  randomImage +".jpg");
         telegramService.sendPhoto(chatId, inputFile);

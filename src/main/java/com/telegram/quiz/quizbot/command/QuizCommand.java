@@ -10,25 +10,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
 public class QuizCommand implements Command {
     private final TelegramService telegramService;
-    private final QuizServiceImpl dbQuizService;
-    private final List<Integer> questionsCount = new ArrayList<>();
-
-
-    public void fillQuestionsCount() {
-        int quizSize = dbQuizService.getAllQuestions().size();
-        for (int i = 1; i <= quizSize; i++) {
-            questionsCount.add(i);
-        }
-        Collections.shuffle(questionsCount);
-    }
+    private final QuizServiceImpl quizService;
+    private final Map<Long, List<Integer>> mapOfQuestions = new HashMap<>();
 
     @Override
     public String getCommandName() {
@@ -39,12 +28,28 @@ public class QuizCommand implements Command {
     @Transactional
     public void execute(Message message) {
         Long chatId = message.getChatId();
-        if (questionsCount.isEmpty()) {
-            fillQuestionsCount();
+
+        if(!mapOfQuestions.containsKey(chatId)) {
+            int questions = quizService.getCount();
+            List<Integer> listQuestions = new ArrayList<>();
+            for (int i = 1; i <= questions; i++) {
+                listQuestions.add(i);
+            }
+            Collections.shuffle(listQuestions);
+            mapOfQuestions.put(chatId, listQuestions);
+        } else if (mapOfQuestions.containsKey(chatId) && mapOfQuestions.get(chatId).isEmpty()) {
+            int questions = quizService.getCount();
+            for (int i = 1; i <= questions; i++) {
+                mapOfQuestions.get(chatId).add(i);
+            }
+            Collections.shuffle(mapOfQuestions.get(chatId));
         }
-        int randomQuestion = questionsCount.removeFirst();
-        QuizObject randomQuiz = dbQuizService.getById(randomQuestion);
+
+        int randomQuestion = mapOfQuestions.get(chatId).removeFirst();
+        QuizObject randomQuiz = quizService.getById(randomQuestion);
         SendPoll quiz = TelegramUtils.createQuiz(chatId, randomQuiz.getTitle(), randomQuiz.getAnswers(), randomQuiz.getCorrectindex());
         telegramService.sendPoll(quiz);
     }
+
+    //TODO Преобразовывать ответы в лист тут перед предачей в метод createQuiz
 }

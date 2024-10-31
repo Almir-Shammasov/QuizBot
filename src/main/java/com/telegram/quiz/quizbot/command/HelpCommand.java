@@ -22,12 +22,18 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(Message message) {
-        telegramService.sendTextMessage(
-                "Справочная информация: " +
-                        "Этот бот создан в рамках изучения библиотеки TelegramLongPollingBot. " +
-                        "Здесь будет предоставлен квиз. Что бы сыграть в квиз нужно отправить команду /quiz. " +
-                        "Так же можно получить рандомный мемасик отправив команду /getmemes " +
-                        "Что бы посмотреть все команды наберите /commandlist", message.getChatId());
+        telegramService.sendTextMessage("""
+                Справочная информация: 
+                Этот бот создан для развлекательных целей :3
+                В нем вы можете сыграть в квиз выполнив команду /quiz
+                Или получить рандомный мемасик выполнив команду /getmemes
+                Список всех команд: /commandlist""", message.getChatId());
+
+//        """Справочная информация:
+//        "Этот бот создан в рамках изучения библиотеки TelegramLongPollingBot.
+//        "Здесь будет предоставлен квиз. Что бы сыграть в квиз нужно отправить команду /quiz.
+//        "Так же можно получить рандомный мемасик отправив команду /getmemes "
+//        "Что бы посмотреть все команды наберите /commandlist", message.getChatId()""");
 
         dbUserService.writeUser(new TelegramUser(
                 message.getChat().getFirstName(),

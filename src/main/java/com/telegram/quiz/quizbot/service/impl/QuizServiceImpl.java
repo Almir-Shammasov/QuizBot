@@ -23,5 +23,7 @@ public class QuizServiceImpl implements QuizService {
         return quizRepository.getById(id);
     }
 
-
+    public int getCount() {
+        return (int)quizRepository.count();
+    }
 }
