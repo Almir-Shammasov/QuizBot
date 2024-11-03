@@ -19,10 +19,20 @@ public class QuizObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @Column(name = "title")
-    private String title;
-    @Column(name = "answers")
-    private List<String> answers;
-    @Column(name = "correct_index")
-    private int correctindex;
+    @Column(name = "question_text")
+    private String questionText;
+    @Column(name = "option_one")
+    private String optionOne;
+    @Column(name = "option_two")
+    private String optionTwo;
+    @Column(name = "option_three")
+    private String optionThree;
+    @Column(name = "option_four")
+    private String optionFour;
+    @Column(name = "option_five")
+    private String optionFive;
+    @Column(name = "option_six")
+    private String optionSix;
+    @Column(name = "correct_optional")
+    private int correctOptional;
 }
