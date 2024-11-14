@@ -1,6 +1,6 @@
 package com.telegram.quiz.quizbot.command;
 
-import com.telegram.quiz.quizbot.entity.QuizObject;
+import com.telegram.quiz.quizbot.entity.Quiz;
 import com.telegram.quiz.quizbot.service.impl.QuizServiceImpl;
 import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import com.telegram.quiz.quizbot.utils.TelegramUtils;
@@ -27,7 +27,7 @@ public class QuizCommand implements Command {
     @Override
     @Transactional
     public void execute(Message message) {
-        Long chatId = message.getChatId();
+        Long chatId = message.getFrom().getId();
 
         if(!mapOfQuestions.containsKey(chatId)) {
             int questions = quizService.getCount();
@@ -47,7 +47,7 @@ public class QuizCommand implements Command {
 
         List<String> optionals = new ArrayList<>();
         int randomQuestion = mapOfQuestions.get(chatId).removeFirst();
-        QuizObject randomQuiz = quizService.getById(randomQuestion);
+        Quiz randomQuiz = quizService.getById(randomQuestion);
         if(randomQuiz.getOptionOne() != null) {
             optionals.add(randomQuiz.getOptionOne());
         }
@@ -65,7 +65,8 @@ public class QuizCommand implements Command {
         }
         if(randomQuiz.getOptionSix() != null) {
             optionals.add(randomQuiz.getOptionSix());
-        }
+        } // TODO Разбить на приватные методы что бы каждый метод отвечал за свое действие
+        // TODO убрать лишний варниант 6й. чт обы всен были 5 тогда можно будет убрит ьвсе ифы
 
         int trueOptional = randomQuiz.getCorrectOptional();
         Map<String, Boolean> mapOptionals = new HashMap<>();
@@ -83,8 +84,10 @@ public class QuizCommand implements Command {
              }
          }
 
+         //TODO Использовать List.indexOf() (вместо инта хранить в ответе стринг, и по нему находить потом правильынй индекмс)
+
 
         SendPoll quiz = TelegramUtils.createQuiz(chatId, randomQuiz.getQuestionText(), optionals, trueOptional);
-        telegramService.sendPoll(quiz);
+        telegramService.send(quiz);
     }
 }

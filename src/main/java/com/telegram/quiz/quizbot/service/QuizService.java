@@ -1,6 +1,6 @@
 package com.telegram.quiz.quizbot.service;
 
-import com.telegram.quiz.quizbot.entity.QuizObject;
+import com.telegram.quiz.quizbot.entity.Quiz;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ public interface QuizService {
      * Returns all questions contained in the database
      * @return returns a List of QuizObject type
      */
-    List<QuizObject> getAllQuestions();
+    List<Quiz> getAllQuestions();
 
     /**
      * Returns the question by its identifier
      * @return returns a QuizObject type
      * @param id
      */
-    QuizObject getById(int id);
+    Quiz getById(int id);
 }

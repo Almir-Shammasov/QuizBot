@@ -19,7 +19,7 @@ public class CommandRegistry {
         Command command = commandMap.get(commandName);
         if(command != null) {
             command.execute(message);
-            log.info("Выполнилась команда: " + commandName);
+            log.info("Выполнилась команда: " + commandName + ". Отправитель: " + message.getChat().getUserName());
         } else {
             log.warn("Command not found: " + commandName);
         }
