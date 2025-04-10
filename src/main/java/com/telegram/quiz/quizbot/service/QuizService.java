@@ -9,12 +9,6 @@ import java.util.List;
  */
 public interface QuizService {
     /**
-     * Returns all questions contained in the database
-     * @return returns a List of QuizObject type
-     */
-    List<QuizObject> getAllQuestions();
-
-    /**
      * Returns the question by its identifier
      * @return returns a QuizObject type
      * @param id
