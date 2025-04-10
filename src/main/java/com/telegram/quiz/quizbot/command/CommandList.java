@@ -8,6 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @RequiredArgsConstructor
 public class CommandList implements Command {
+    private static final String COMMAND_LIST_TEXT = """
+            Список всех команд бота:
+            /help - справочная информация
+            /quiz - сыграть в квиз (случайный вопрос)
+            /getmemes - получить случайный мем""";
+
     private final TelegramService telegramService;
 
     @Override
@@ -17,11 +23,6 @@ public class CommandList implements Command {
 
     @Override
     public void execute(Message message) {
-        String listCommands = """
-                Список всех команд бота:
-                Тип: /help справочная информация
-                Тип: /quiz сыграть в квиз(получить случайный вопрос из квиза)
-                Тип: /getmemes получить рандомный мемчик """;
-        telegramService.sendTextMessage(listCommands, message.getChatId());
+        telegramService.sendTextMessage(COMMAND_LIST_TEXT, message.getChatId());
     }
 }
