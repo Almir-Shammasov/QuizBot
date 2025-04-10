@@ -1,7 +1,7 @@
 package com.telegram.quiz.quizbot.service.impl;
 
 import com.telegram.quiz.quizbot.db.QuizRepository;
-import com.telegram.quiz.quizbot.entity.Quiz;
+import com.telegram.quiz.quizbot.entity.QuizObject;
 import com.telegram.quiz.quizbot.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +15,11 @@ import java.util.List;
 public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizRepository;
 
-    public List<Quiz> getAllQuestions() {
+    public List<QuizObject> getAllQuestions() {
         return quizRepository.findAll();
     }
 
-    public Quiz getById(int id) {
+    public QuizObject getById(int id) {
         return quizRepository.getById(id);
     }
 

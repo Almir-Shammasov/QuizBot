@@ -5,7 +5,6 @@ import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -27,7 +26,7 @@ public class SendImageCommand implements Command {
     @Override
     @Transactional
     public void execute(Message message) {
-        Long chatId = message.getFrom().getId();
+        Long chatId = message.getChatId();
 
         if(!mapOfImages.containsKey(chatId)) {
             int images = imageService.getCount();
@@ -51,7 +50,6 @@ public class SendImageCommand implements Command {
         int randomImage = mapOfImages.get(chatId).removeFirst();
         byte[] image = imageService.getImage(randomImage);
         InputFile inputFile = new InputFile(new ByteArrayInputStream(image),  randomImage +".jpg");
-        SendPhoto photo = SendPhoto.builder().chatId(chatId).photo(inputFile).build();
-        telegramService.sendPhoto(photo);
+        telegramService.sendPhoto(chatId, inputFile);
     }
 }

@@ -1,24 +1,16 @@
 package com.telegram.quiz.quizbot.command;
 
-import com.telegram.quiz.quizbot.entity.TelegramUser;
-import com.telegram.quiz.quizbot.entity.UserData;
-import com.telegram.quiz.quizbot.service.impl.UserDataServiceImpl;
 import com.telegram.quiz.quizbot.service.impl.UserServiceImpl;
 import com.telegram.quiz.quizbot.service.impl.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class HelpCommand implements Command {
     private final TelegramService telegramService;
     private final UserServiceImpl dbUserService;
-    private final UserDataServiceImpl userDataService;
 
     @Override
     public String getCommandName() {

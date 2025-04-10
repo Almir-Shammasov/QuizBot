@@ -65,15 +65,7 @@ public class TelegramService extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }
-    } // TODO Создать в утилитарном классе метод с параметром который будет билдить сообщзение как в параметрах execute
-
-    private SendMessage buildMessage(String text, Long chatId) {
-        return SendMessage.builder()
-                .chatId(chatId)
-                .text(text)
-                .parseMode(parseMode)
-                .build();
-    }  // TODO формирую SendMessage с помощью этого метода и кладу в send()
+    }
 
     public void sendPoll(SendPoll poll) {
         try {
@@ -91,10 +83,10 @@ public class TelegramService extends TelegramLongPollingBot {
         }
     }
 
-    public <T extends BotApiMethodMessage> Message send(T message) {
-
+    public void sendPhoto(Long chatId, InputFile inputFile) {
+        SendPhoto photo = SendPhoto.builder().chatId(chatId).photo(inputFile).build();
         try {
-            execute(message);
+            execute(photo);
         } catch (TelegramApiException e) {
             log.error("Error occurred: " + e.getMessage());
         }

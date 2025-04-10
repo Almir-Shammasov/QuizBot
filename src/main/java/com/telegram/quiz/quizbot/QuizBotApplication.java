@@ -10,5 +10,4 @@ public class QuizBotApplication {
         SpringApplication.run(QuizBotApplication.class, args);
     }
 
-    //TODO создать два репозитория под Category и UserStatistics
 }

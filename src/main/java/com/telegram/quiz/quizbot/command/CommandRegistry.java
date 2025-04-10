@@ -11,18 +11,23 @@ import java.util.Map;
 @Slf4j
 public class CommandRegistry {
     private final Map<String, Command> commandMap = new HashMap<>();
+
     public void registerCommand(Command command) {
         commandMap.put(command.getCommandName(), command);
-        log.info("Команда " + command.getCommandName() + " зарегистрирована");
-    }
-    public void executeCommand(String commandName, Message message) {
-        Command command = commandMap.get(commandName);
-        if(command != null) {
-            command.execute(message);
-            log.info("Выполнилась команда: " + commandName + ". Отправитель: " + message.getChat().getUserName());
-        } else {
-            log.warn("Command not found: " + commandName);
-        }
+        log.info("Command registered: {}", command.getCommandName());
     }
 
+    public Command getCommand(String commandName) {
+        return commandMap.get(commandName);
+    }
+
+    public void executeCommand(String commandName, Message message) {
+        Command command = getCommand(commandName);
+        if (command != null) {
+            command.execute(message);
+            log.info("Command executed: {}", commandName);
+        } else {
+            log.warn("Command not found: {}", commandName);
+        }
+    }
 }
